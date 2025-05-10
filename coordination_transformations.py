@@ -1,0 +1,2 @@
+def bend(R):
+    pass
