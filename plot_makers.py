@@ -8,3 +8,7 @@ def plot_spin_config(lattice):
 
 def plot_free_energy(data):
     pass
+
+
+def plot_free_energy_terms(data):
+    pass
