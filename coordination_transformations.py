@@ -17,8 +17,11 @@ def rotate_vector(vector, axis, angle, degree=False):
     return vector_out
 
 
-def bend(R):
-    pass
+def bend(vector, R):
+    angle = vector[0] / R
+    vector[0] = R * np.sin(angle)
+    vector[2] = R * np.cos(angle)
+    return vector
 
 
 if __name__ == '__main__':
