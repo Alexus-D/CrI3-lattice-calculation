@@ -1,14 +1,14 @@
-def DMI(lattice):
+def DMI(nodes, edges):
     pass
 
 
-def anisotropy(lattice):
+def anisotropy(nodes, edges):
     pass
 
 
-def magnetostatic(lattice):
+def magnetostatic(nodes, edges):
     pass
 
 
-def isotropic_exchange(lattice):
+def isotropic_exchange(nodes, edges):
     pass

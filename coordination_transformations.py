@@ -1,9 +1,11 @@
 import numpy as np
 
 
-def rotate_vector(vector, axis, angle, degree):
+def rotate_vector(vector, axis, angle, degree=False):
     if degree:
         angle = angle * np.pi / 180
+    if np.linalg.norm(vector) == 0:
+        return vector
     e_rot = axis / np.linalg.norm(axis)
     vec_norm = np.dot(vector, e_rot)
     vec_plane = vector - vec_norm * e_rot
