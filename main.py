@@ -7,24 +7,25 @@ from scipy.ndimage import gaussian_filter
 
 
 cell = 11.869818272463824
-energy = []
-r = []
-for N in range(4, 50):
-    length = N * cell
-    R = length / (2 * np.pi)
-    lat = lc.LatticeCrI3(N)
-    lat.transform_coordinates(ct.bend, R)
-    # lat.set_spins(lambda x: 0)
-    lat.set_spins(lambda x: x * 2 * np.pi)
-    # E = lat.calc_free_energy_term(F.isotropic_exchange)
-    # E = lat.calc_free_energy_term(F.anisotropy)
-    E = lat.calc_free_energy_term(F.DMI)
-    # E = lat.calc_free_energy_term(F.magnetostatic)
-    r.append(R)
-    energy.append(E)
+file_names = {'anisotropy-from-radius-curvature': F.anisotropy,
+              'DMI-from-radius-curvature': F.DMI,
+              'Magnetostatic-from-radius-curvature': F.magnetostatic,
+              'uniform-exchange-from-radius-curvature': F.isotropic_exchange}
+spin_configs = {'uniform-spins': lambda x: 0, 'hedgehog': lambda x: x * 2 * np.pi}
 
-energy = np.array(energy)
-energy = gaussian_filter(energy, sigma=3)
-
-output = np.array([r, energy]).transpose()
-np.savetxt(f'DMI-from-radius-curvature(hedgehog).txt', output)
+for file_name in file_names.items():
+    for config in spin_configs.items():
+        energy = []
+        curvature = []
+        for N in range(10, 50):
+            length = N * cell
+            R = length / (2 * np.pi)
+            lat = lc.LatticeCrI3(N)
+            lat.transform_coordinates(ct.bend, R)
+            lat.set_spins(config[1])
+            curvature.append(1 / R)
+            energy.append(lat.calc_free_energy_term(file_name[1], 'meV'))
+        energy = np.array(energy)
+        energy = gaussian_filter(energy, sigma=3)
+        output = np.array([curvature, energy]).transpose()
+        np.savetxt(f"Images\\{file_name[0]}({config[0]}).txt", output)

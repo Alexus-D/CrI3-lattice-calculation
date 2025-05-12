@@ -5,10 +5,10 @@ import coordination_transformations as ct
 
 class LatticeCrI3:
     def __init__(self, N):
-        self.Ku = 0.75 / 10**3 * 1.602176634 / 10**12  # effective anisotropy, erg/ion
+        self.Ku = 0.75 * 1.602176634e-15  # effective anisotropy, erg/ion
         self.muB = 927.40100783 / 10**23  # erg/Gs
         self.magnetic_moment = 3.1 * self.muB  # erg / (Gs * ion)
-        self.V0 = 1.1 / 10**3 * 1.602176634 / 10**12  # erg/angstrom**2
+        self.V0 = 1.1 * 1.602176634e-15  # erg/angstrom**2
         self.angle = {'I-Cr-I': 87.12,
                       'Cr-I-Cr': 92.88,
                       'Cr-Cr-Cr': 120}
@@ -64,6 +64,14 @@ class LatticeCrI3:
                             coords=[vec_I_1 + self.graph.nodes()[last_node]['coords'],
                                     vec_I_2 + self.graph.nodes()[last_node]['coords']],
                             double=False)
+        with open('lattice_values.txt', 'w') as f:
+            f.write('Lengths:\n')
+            for line in self.length.items():
+                f.write(f'{line[0]}: {line[1]}\n')
+            f.write('\nAngles:\n')
+            for line in self.angle.items():
+                f.write(f'{line[0]}: {line[1]}\n')
+
 
     def transform_coordinates(self, transform_func, *args):
         for i, node in enumerate(self.graph.nodes):
