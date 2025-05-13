@@ -26,6 +26,6 @@ for file_name in file_names.items():
             curvature.append(1 / R)
             energy.append(lat.calc_free_energy_term(file_name[1], 'meV'))
         energy = np.array(energy)
-        energy = gaussian_filter(energy, sigma=3)
+        energy = gaussian_filter(energy, sigma=4)
         output = np.array([curvature, energy]).transpose()
         np.savetxt(f"Images\\{file_name[0]}({config[0]}).txt", output)

@@ -3,6 +3,11 @@ import lattice as lc
 import coordination_transformations as ct
 
 
+unit_coefficient = {'eV': 6.24150965e11,
+                    'meV': 6.24150965e14,
+                    'erg': 1.}
+
+
 def J1(epsilon):
     return (-1.52189 + 6.53823 * epsilon + 124.13611 * epsilon**2) * 1.602176634e-15  # in erg
 
@@ -12,9 +17,6 @@ def J2(epsilon):
 
 
 def DMI(lattice: lc.LatticeCrI3, unit='meV'):
-    unit_coefficient = {'eV': 6.24150965e11,
-                        'meV': 6.24150965e14,
-                        'erg': 1.}
     graph = lattice.graph
     nodes = graph.nodes
     edges = graph.edges
@@ -36,9 +38,6 @@ def DMI(lattice: lc.LatticeCrI3, unit='meV'):
 
 
 def anisotropy(lattice: lc.LatticeCrI3, unit='meV'):
-    unit_coefficient = {'eV': 6.24150965e11,
-                        'meV': 6.24150965e14,
-                        'erg': 1.}
     graph = lattice.graph
     nodes = graph.nodes
     Ku = lattice.Ku
@@ -47,16 +46,12 @@ def anisotropy(lattice: lc.LatticeCrI3, unit='meV'):
         spin = graph.nodes()[node]['spin']
         coords = graph.nodes()[node]['coords']
         norm_angle = np.arctan(coords[0] / coords[2]) if np.linalg.norm(coords) else 0.
-        norm_angle = 0
         spin_angle = np.arctan(spin[0] / spin[2])
         E += -Ku * np.cos(norm_angle - spin_angle)**2
     return E / graph.number_of_nodes() * unit_coefficient[unit]
 
 
 def magnetostatic(lattice: lc.LatticeCrI3, unit='meV'):
-    unit_coefficient = {'eV': 6.24150965e11,
-                        'meV': 6.24150965e14,
-                        'erg': 1.}
     mu0 = lattice.magnetic_moment
     graph = lattice.graph
     nodes = graph.nodes
@@ -79,9 +74,6 @@ def magnetostatic(lattice: lc.LatticeCrI3, unit='meV'):
 
 
 def isotropic_exchange(lattice: lc.LatticeCrI3, unit='meV'):
-    unit_coefficient = {'eV': 6.24150965e11,
-                        'meV': 6.24150965e14,
-                        'erg': 1.}
     graph = lattice.graph
     nodes = graph.nodes().data()
     edges = graph.edges
